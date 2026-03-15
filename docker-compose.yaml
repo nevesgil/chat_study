@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: database
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/database/postgres_data:/var/lib/postgresql/data
+      - ./database/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my_network
+
+  api:
+    build: ./backend
+    container_name: backend
+    depends_on:
+      - postgres
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://admin:admin@postgres:5432/database
+    networks:
+      - my_network
+    volumes:
+      - ./backend:/app
+  mcpserver:
+    build: ./mcpserver
+    container_name: mcpserver
+    ports:
+      - "8002:8000"
+    networks:
+      - my_network
+    volumes:
+      - ./mcpserver:/app
+
+  langflow:
+    image: langflowai/langflow:latest
+    ports:
+      - "7860:7860"
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:
+
+networks:
+  my_network:
+    driver: bridge
