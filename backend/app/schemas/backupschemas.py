@@ -3,11 +3,6 @@ from enum import Enum
 from pydantic import BaseModel, ConfigDict
 
 
-# ============================================================================
-# PACKAGE SCHEMAS
-# ============================================================================
-
-
 class PackageCategory(str, Enum):
     A = "A"
     B = "B"
@@ -39,22 +34,12 @@ class PackageResponse(PackageBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-# ============================================================================
-# MILESTONE SCHEMAS
-# ============================================================================
-
-
 class MilestoneResponse(BaseModel):
     id: int
     name: str
     milestone_order: int
 
     model_config = ConfigDict(from_attributes=True)
-
-
-# ============================================================================
-# PSR SCHEMAS
-# ============================================================================
 
 
 class PSRUpdate(BaseModel):
@@ -70,11 +55,6 @@ class PSRResponse(BaseModel):
     actual_date: date | None = None
 
     model_config = ConfigDict(from_attributes=True)
-
-
-# ============================================================================
-# COMMENT SCHEMAS
-# ============================================================================
 
 
 class CommentBase(BaseModel):
@@ -98,11 +78,6 @@ class CommentResponse(CommentBase):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
-
-
-# ============================================================================
-# ANALYTICS SCHEMAS
-# ============================================================================
 
 
 class ProcurementSummary(BaseModel):
@@ -147,11 +122,6 @@ class PSRDetailWithAnalytics(PSRDetail):
     delay_days: int | None = None
     is_delayed: bool = False
     is_completed: bool = False
-
-
-# ============================================================================
-# TIMELINE SCHEMAS
-# ============================================================================
 
 
 class MilestoneStatus(BaseModel):

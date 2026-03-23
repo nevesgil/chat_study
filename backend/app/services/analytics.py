@@ -275,6 +275,7 @@ def get_package_status(db: Session, package_id: int) -> PackageStatus:
         total_delay_days=total_delay,
     )
 
+
 def get_package_status_v2(db: Session, package_id: int) -> PackageStatus:
     today = date.today()
 

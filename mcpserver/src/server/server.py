@@ -10,6 +10,7 @@ BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000")
 
 client = httpx.AsyncClient(timeout=20.0)
 
+
 async def _get_json(path: str, params: Mapping[str, str] | None = None) -> Any:
     try:
         response = await client.get(f"{BACKEND_URL}{path}", params=params)
@@ -26,15 +27,18 @@ async def get_system_status():
     """
     return await _get_json("/")
 
+
 @mcp.tool()
 async def ping():
     """Simple connectivity test."""
     return {"message": "pong"}
 
+
 @mcp.tool()
 async def bla():
     """Simple connectivity test."""
     return {"message": "blablablabla"}
+
 
 @mcp.tool()
 async def list_packages():
@@ -42,6 +46,7 @@ async def list_packages():
     Retrieve all packages currently being tracked.
     """
     return await _get_json("/packages")
+
 
 @mcp.tool()
 async def get_delayed_milestones():
@@ -89,7 +94,6 @@ async def sumarize_package_status(package_id: int):
     Returns status and progress details for a package.
     """
     return await _get_json(f"/analytics/package-status/{package_id}")
-
 
 
 app = mcp.http_app(path="/mcp/")

@@ -1,0 +1,32 @@
+graph TD
+    subgraph "Client (Browser)"
+        A[React UI] <--> B[MCP Client & AI Orchestrator]
+    end
+
+    subgraph "Backend / Proxy Layer"
+        C[API Gateway / Auth Proxy]
+        D[AI Key Management]
+    end
+
+    subgraph "Your Big MCP Server"
+        E[MCP Server Engine]
+        F[Microservice 1: Contracts]
+        G[Microservice 2: Procurement]
+        H[Other Microservices...]
+    end
+
+    subgraph "External"
+        I[LLM Provider: e.g., OpenAI/Claude]
+    end
+
+    A -- "User Prompt" --> B
+    B -- "1. Request Inference" --> C
+    C -- "2. Add API Key & Forward" --> I
+    I -- "3. Return Tool Call" --> C
+    C -- "4. Forward to FE" --> B
+    B -- "5. Execute Tool Request" --> C
+    C -- "6. Check JWT & Permission" --> E
+    E -- "7. Fetch Data" --> F & G & H
+    E -- "8. Return Data" --> C
+    C -- "9. Return to FE" --> B
+    B -- "10. Send Context to AI" --> C
